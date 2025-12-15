@@ -1,4 +1,4 @@
-TODO_plugin_name:
-  plugin_name_enabled:
+discourse_ip_anonymizer:
+  discourse_ip_anonymizer_enabled:
     default: false
     client: true

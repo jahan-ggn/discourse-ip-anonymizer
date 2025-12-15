@@ -1,4 +1,4 @@
-# **Plugin Name** Plugin
+# **Discourse Ip Anonymizer** Plugin
 
 **Plugin Summary**
 

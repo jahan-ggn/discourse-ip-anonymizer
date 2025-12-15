@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# name: discourse-plugin-name
+# name: discourse-ip-anonymizer
 # about: TODO
 # meta_topic_id: TODO
 # version: 0.0.1
@@ -8,13 +8,13 @@
 # url: TODO
 # required_version: 2.7.0
 
-enabled_site_setting :plugin_name_enabled
+enabled_site_setting :discourse_ip_anonymizer_enabled
 
-module ::MyPluginModule
-  PLUGIN_NAME = "discourse-plugin-name"
+module ::DiscourseIpAnonymizer
+  PLUGIN_NAME = "discourse-ip-anonymizer"
 end
 
-require_relative "lib/my_plugin_module/engine"
+require_relative "lib/discourse_ip_anonymizer/engine"
 
 after_initialize do
   # Code which should run after Rails has finished booting
