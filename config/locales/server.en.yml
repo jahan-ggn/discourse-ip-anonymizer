@@ -1,1 +1,4 @@
 en:
+  site_settings:
+    discourse_ip_anonymizer_enabled: "When enabled, client IP addresses are deterministically anonymized before being used or stored."
+    discourse_ip_anonymizer_secret_key: "Secret key used to deterministically anonymize IP addresses. Changing this will re-map all anonymized IPs."

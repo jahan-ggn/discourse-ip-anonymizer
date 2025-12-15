@@ -3,7 +3,8 @@ en:
     admin:
       site_settings:
         categories:
-          discourse_ip_anonymizer: "Discourse Ip Anonymizer"
+          discourse_ip_anonymizer: "Discourse IP Anonymizer"
   js:
     discourse_ip_anonymizer:
-      placeholder: placeholder
+      title: "Discourse IP Anonymizer"
+      admin_navigation: "Discourse IP Anonymizer"

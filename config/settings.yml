@@ -2,3 +2,8 @@ discourse_ip_anonymizer:
   discourse_ip_anonymizer_enabled:
     default: false
     client: true
+  discourse_ip_anonymizer_secret_key:
+    default: ""
+    secret: true
+    area: "authenticators"
+    hidden: true
