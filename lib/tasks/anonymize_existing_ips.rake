@@ -18,7 +18,7 @@ task "anonymize:existing_ips" => :environment do
   quote      = ->(value) { connection.quote(value) }
   batch_size = 1_000
 
-  TABLES_WITH_ID = [
+  TABLES_WITH_ID ||= [
     { table: "users", column: "ip_address" },
     { table: "users", column: "registration_ip_address" },
     { table: "user_auth_tokens", column: "client_ip" },
@@ -33,7 +33,7 @@ task "anonymize:existing_ips" => :environment do
     { table: "screened_urls", column: "ip_address" }
   ].freeze
 
-  TABLES_WITHOUT_ID = [
+  TABLES_WITHOUT_ID ||= [
     { table: "topic_views", column: "ip_address" }
   ].freeze
 
