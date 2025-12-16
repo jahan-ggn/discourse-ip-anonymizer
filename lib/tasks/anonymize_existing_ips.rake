@@ -15,27 +15,31 @@ task "anonymize:existing_ips" => :environment do
   end
 
   connection = ActiveRecord::Base.connection
-  quote      = ->(value) { connection.quote(value) }
+  quote = ->(value) { connection.quote(value) }
   batch_size = 1_000
 
-  TABLES_WITH_ID ||= [
-    { table: "users", column: "ip_address" },
-    { table: "users", column: "registration_ip_address" },
-    { table: "user_auth_tokens", column: "client_ip" },
-    { table: "user_auth_token_logs", column: "client_ip" },
-    { table: "incoming_links", column: "ip_address" },
-    { table: "search_logs", column: "ip_address" },
-    { table: "topic_link_clicks", column: "ip_address" },
-    { table: "user_profile_views", column: "ip_address" },
-    { table: "user_histories", column: "ip_address" },
-    { table: "user_ip_address_histories", column: "ip_address" },
-    { table: "screened_emails", column: "ip_address" },
-    { table: "screened_urls", column: "ip_address" }
-  ].freeze
+  unless defined?(TABLES_WITH_ID)
+    TABLES_WITH_ID = [
+      { table: "users", column: "ip_address" },
+      { table: "users", column: "registration_ip_address" },
+      { table: "user_auth_tokens", column: "client_ip" },
+      { table: "user_auth_token_logs", column: "client_ip" },
+      { table: "incoming_links", column: "ip_address" },
+      { table: "search_logs", column: "ip_address" },
+      { table: "topic_link_clicks", column: "ip_address" },
+      { table: "user_profile_views", column: "ip_address" },
+      { table: "user_histories", column: "ip_address" },
+      { table: "user_ip_address_histories", column: "ip_address" },
+      { table: "screened_emails", column: "ip_address" },
+      { table: "screened_urls", column: "ip_address" }
+    ].freeze
+  end
 
-  TABLES_WITHOUT_ID ||= [
-    { table: "topic_views", column: "ip_address" }
-  ].freeze
+  unless defined?(TABLES_WITHOUT_ID)
+    TABLES_WITHOUT_ID = [
+      { table: "topic_views", column: "ip_address" }
+    ].freeze
+  end
 
   total_rows_updated = 0
 
