@@ -8,11 +8,6 @@ desc "Anonymize all existing IP addresses in the database"
 task "anonymize:existing_ips" => :environment do
   puts "Starting IP anonymization task…"
 
-  unless SiteSetting.discourse_ip_anonymizer_enabled
-    puts "ERROR: discourse_ip_anonymizer_enabled is disabled"
-    exit 1
-  end
-
   if SiteSetting.discourse_ip_anonymizer_secret_key.blank?
     puts "ERROR: discourse_ip_anonymizer_secret_key is not configured"
     exit 1
