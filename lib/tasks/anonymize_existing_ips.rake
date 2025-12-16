@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+return if defined?(DISCOURSE_IP_ANONYMIZER_EXISTING_IPS_TASK)
+
+DISCOURSE_IP_ANONYMIZER_EXISTING_IPS_TASK = true
+
 desc "Anonymize all existing IP addresses in the database"
 task "anonymize:existing_ips" => :environment do
   puts "Starting IP anonymization task…"
@@ -15,37 +19,30 @@ task "anonymize:existing_ips" => :environment do
   end
 
   connection = ActiveRecord::Base.connection
-  quote = ->(value) { connection.quote(value) }
+  quote      = ->(value) { connection.quote(value) }
   batch_size = 1_000
 
-  unless defined?(TABLES_WITH_ID)
-    TABLES_WITH_ID = [
-      { table: "users", column: "ip_address" },
-      { table: "users", column: "registration_ip_address" },
-      { table: "user_auth_tokens", column: "client_ip" },
-      { table: "user_auth_token_logs", column: "client_ip" },
-      { table: "incoming_links", column: "ip_address" },
-      { table: "search_logs", column: "ip_address" },
-      { table: "topic_link_clicks", column: "ip_address" },
-      { table: "user_profile_views", column: "ip_address" },
-      { table: "user_histories", column: "ip_address" },
-      { table: "user_ip_address_histories", column: "ip_address" },
-      { table: "screened_emails", column: "ip_address" },
-      { table: "screened_urls", column: "ip_address" }
-    ].freeze
-  end
+  TABLES_WITH_ID = [
+    { table: "users",                     column: "ip_address" },
+    { table: "users",                     column: "registration_ip_address" },
+    { table: "user_auth_tokens",           column: "client_ip" },
+    { table: "user_auth_token_logs",       column: "client_ip" },
+    { table: "incoming_links",             column: "ip_address" },
+    { table: "search_logs",                column: "ip_address" },
+    { table: "topic_link_clicks",           column: "ip_address" },
+    { table: "user_profile_views",          column: "ip_address" },
+    { table: "user_histories",              column: "ip_address" },
+    { table: "user_ip_address_histories",   column: "ip_address" },
+    { table: "screened_emails",             column: "ip_address" },
+    { table: "screened_urls",               column: "ip_address" }
+  ].freeze
 
-  unless defined?(TABLES_WITHOUT_ID)
-    TABLES_WITHOUT_ID = [
-      { table: "topic_views", column: "ip_address" }
-    ].freeze
-  end
+  TABLES_WITHOUT_ID = [
+    { table: "topic_views", column: "ip_address" }
+  ].freeze
 
   total_rows_updated = 0
 
-  # ------------------------------------------------------------
-  # Tables with primary key (safe cursor-based batching)
-  # ------------------------------------------------------------
   TABLES_WITH_ID.each do |config|
     table  = config[:table]
     column = config[:column]
@@ -97,9 +94,6 @@ task "anonymize:existing_ips" => :environment do
     puts "\nFinished #{table}.#{column}"
   end
 
-  # ------------------------------------------------------------
-  # Tables without primary key (distinct-IP update)
-  # ------------------------------------------------------------
   TABLES_WITHOUT_ID.each do |config|
     table  = config[:table]
     column = config[:column]
